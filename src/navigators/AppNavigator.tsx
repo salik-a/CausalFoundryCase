@@ -5,17 +5,19 @@
  * and a "main" flow which the user will use once logged in.
  */
 
-import React from "react"
-import { useColorScheme } from "react-native"
+import React from "react";
+import { useColorScheme } from "react-native";
+
+
 
 import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
+import { LoginScreen, PostsScreen, PostsScreenDetail } from "src/screens"
 import { colors } from "src/theme"
 
 import Config from "../config"
 import { useNavigatorFontScalingScreenOptions } from "../theme/fonting"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
-import { TabBarNavigator } from "./TabNavigator"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -35,6 +37,9 @@ export type AppStackParamList = {
   MenuScreen: undefined
   Main: undefined
   CounterScreen: undefined
+  LoginScreen: undefined
+  PostsScreen: undefined
+  PostsScreenDetail: undefined
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
@@ -62,8 +67,11 @@ const AppStack = () => {
         navigationBarColor: colors.background,
         ...screenOptions,
       }}
+      initialRouteName="LoginScreen"
     >
-      <Stack.Screen name="Main" component={TabBarNavigator} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="PostsScreen" component={PostsScreen} />
+      <Stack.Screen name="PostsScreenDetail" component={PostsScreenDetail} />
       {/** 🔥 Your screens go here */}
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
