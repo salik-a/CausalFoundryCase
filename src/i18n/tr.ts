@@ -31,6 +31,15 @@ const tr: Translations = {
     menu: "Menü",
     counter: "Counter",
   },
+  loginScreen: {
+    login: "Giriş Yap",
+    userName: "Kullanıcı Adı",
+    userNameError: "Kullanıcı adınızı kontrol ediniz",
+    passwordError: "Şifrenizi kontrol ediniz",
+    namePlaceholder: "emilys",
+    password: "Şifre",
+    passwordPlaceholder: "emilyspass",
+  },
 }
 
 export default tr

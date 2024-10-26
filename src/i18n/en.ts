@@ -28,6 +28,15 @@ const en = {
     menu: "Menu",
     counter: "Counter",
   },
+  loginScreen: {
+    login: "Sign In",
+    userName: "Username",
+    userNameError: "Check your username",
+    passwordError: "Check your password",
+    namePlaceholder: "emilys",
+    password: "Password",
+    passwordPlaceholder: "emilyspass",
+  },
 }
 
 export default en
