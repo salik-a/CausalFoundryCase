@@ -12,6 +12,7 @@ export const DEFAULT_API_CONFIG: ApiConfig = {
 export class Api {
   apisauce: ApisauceInstance
   config: ApiConfig
+  token: any
 
   constructor(config: ApiConfig = DEFAULT_API_CONFIG) {
     this.config = config
@@ -24,34 +25,52 @@ export class Api {
     })
   }
 
-  // setToken(token) {
-  //   console.log("calisti")
-  //   this.token = token
-  //   console.log(this.token)
-  //   this.axiosInstance.defaults.headers["Authorization"] = `Bearer ${this.token}`
-  // }
+  setToken(token: string) {
+    this.token = token
+    this.apisauce.setHeader("Authorization", `Bearer ${token}`)
+  }
 
-  async getListProduct(): Promise<any[]> {
-    const response: ApiResponse<any[]> = await this.apisauce.get("/products")
+  async getListPosts(): Promise<any[]> {
+    const response: ApiResponse<any[]> = await this.apisauce.get("/posts")
     if (!response.ok || !response.data) {
       throw new Error(response.problem || "API Error")
     }
     return response.data
   }
 
-  async getDetailProduct(Id: any): Promise<any[]> {
-    const response: ApiResponse<any[]> = await this.apisauce.get(`/products/${Id}`)
+  async getPostsSearch(query: string): Promise<any[]> {
+    const response: ApiResponse<any[]> = await this.apisauce.get(`posts/search?q=${query}`)
     if (!response.ok || !response.data) {
       throw new Error(response.problem || "API Error")
     }
     return response.data
   }
 
-  async updateProduct(Id: string, data: any): Promise<any> {
-    const response: ApiResponse<any> = await api.apisauce.put(`/products/${Id}`, data)
+  async getUser(Id: any): Promise<any[]> {
+    const response: ApiResponse<any[]> = await this.apisauce.get(`/users/${Id}`)
     if (!response.ok || !response.data) {
       throw new Error(response.problem || "API Error")
     }
+    return response.data
+  }
+
+  async login(username: string, password: string, expiresInMins = 30): Promise<any> {
+    const response: ApiResponse<any> = await this.apisauce.post(
+      "/auth/login",
+      {
+        username,
+        password,
+        expiresInMins,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: false, // This will include cookies in the request
+      },
+    )
+    if (!response.ok || !response.data) {
+      throw new Error(response.problem || "API Error during login")
+    }
+    this.setToken(response.data.accessToken)
     return response.data
   }
 }
