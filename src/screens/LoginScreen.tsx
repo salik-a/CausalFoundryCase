@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useEffect } from "react"
 import { Alert, Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
 
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -9,7 +9,10 @@ import { AppStackScreenProps, navigationRef } from "src/navigators"
 import { api } from "src/services/api"
 import { useUserStore } from "src/store/userStore"
 import { colors, spacing } from "src/theme"
+import { saveExistingArray } from "src/utils/storage"
 import * as yup from "yup"
+
+import { getCurrentDate } from "../utils/getCurrentDate"
 
 const welcomeLogo = require("../../assets/images/logo.png")
 
@@ -35,6 +38,13 @@ const LoginScreen: FC<LoginScreenProps> = () => {
       Alert.alert(`${error.message}`)
     },
   })
+
+  useEffect(() => {
+    saveExistingArray("logs", {
+      action: "login_screen",
+      ts: getCurrentDate(),
+    })
+  }, [])
 
   const schema = yup.object().shape({
     userName: yup

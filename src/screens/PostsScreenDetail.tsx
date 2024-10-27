@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react"
+import React, { FC, useCallback, useEffect } from "react"
 import {
   ActivityIndicator,
   Alert,
@@ -17,6 +17,8 @@ import { AppStackScreenProps, navigationRef } from "src/navigators"
 import { api } from "src/services/api"
 import { useUserStore } from "src/store/userStore"
 import { colors } from "src/theme"
+import { getCurrentDate } from "src/utils/getCurrentDate"
+import { saveExistingArray } from "src/utils/storage"
 
 interface PostsScreenDetailProps extends AppStackScreenProps<"PostsScreenDetail"> {}
 
@@ -29,6 +31,13 @@ const PostsScreenDetail: FC<PostsScreenDetailProps> = ({ navigation, route }) =>
     queryFn: () => api.getUser(userId), /// burada çalışmasını istediğimiz query fonksiyonunu belirtiyoruz
     enabled: true, //bu component yüklendiğinde direk çalış dedim
   })
+
+  useEffect(() => {
+    saveExistingArray("logs", {
+      action: "posts_detail_screen",
+      ts: getCurrentDate(),
+    })
+  }, [])
 
   const handleLogout = useCallback(() => {
     Alert.alert(translate("common.logout"), translate("common.askLogout"), [

@@ -68,9 +68,17 @@ export class Api {
       },
     )
     if (!response.ok || !response.data) {
-      throw new Error(response.problem || "API Error during login")
+      throw new Error(response.problem || "API Error")
     }
     this.setToken(response.data.accessToken)
+    return response.data
+  }
+
+  async sendLogs(logs: any): Promise<any> {
+    const response: ApiResponse<any> = await this.apisauce.post("/http/200", logs)
+    if (!response.ok || !response.data) {
+      throw new Error(response.problem || "API Error")
+    }
     return response.data
   }
 }

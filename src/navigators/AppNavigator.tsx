@@ -5,15 +5,22 @@
  * and a "main" flow which the user will use once logged in.
  */
 
-import React from "react";
-import { useColorScheme } from "react-native";
+import React, { useEffect } from "react"
+import { AppState, useColorScheme } from "react-native"
 
 
 
 import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
+import { useMutation } from "@tanstack/react-query"
 import { LoginScreen, PostsScreen, PostsScreenDetail } from "src/screens"
+import { api } from "src/services/api"
+import { useUserStore } from "src/store/userStore"
 import { colors } from "src/theme"
+import { getCurrentDate } from "src/utils/getCurrentDate"
+import { clearStore, load, saveExistingArray } from "src/utils/storage"
+
+
 
 import Config from "../config"
 import { useNavigatorFontScalingScreenOptions } from "../theme/fonting"
@@ -64,6 +71,45 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStack
 const Stack = createNativeStackNavigator<AppStackParamList>()
 const AppStack = () => {
   const screenOptions = useNavigatorFontScalingScreenOptions()
+  const user = useUserStore((state) => state.userInfo)
+  console.log(user.username)
+  const { mutate: sendLogsMutate } = useMutation<any, Error, any>({
+    mutationKey: ["login"],
+    mutationFn: (logs) => api.sendLogs(logs),
+  })
+
+  const handleSendLogs = () => {
+    const logs = load("logs")
+    sendLogsMutate({
+      username: user.username,
+      data: logs,
+    })
+    console.log({
+      username: user.username,
+      data: logs,
+    })
+    clearStore()
+  }
+  useEffect(() => {
+    saveExistingArray("logs", {
+      action: "app_open",
+      ts: getCurrentDate(),
+    })
+
+    const handleAppStateChange = (nextAppState: string) => {
+      if (nextAppState === "background") {
+        // Uygulama arka plana alındığında çalışacak fonksiyon
+        handleSendLogs()
+      }
+    }
+
+    const subscription = AppState.addEventListener("change", handleAppStateChange)
+
+    // Temizleme işlemi
+    return () => {
+      subscription.remove()
+    }
+  }, [])
 
   return (
     <Stack.Navigator

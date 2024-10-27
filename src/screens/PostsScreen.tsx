@@ -18,6 +18,8 @@ import { AppStackScreenProps, navigationRef } from "src/navigators"
 import { api } from "src/services/api"
 import { useUserStore } from "src/store/userStore"
 import { colors } from "src/theme"
+import { getCurrentDate } from "src/utils/getCurrentDate"
+import { saveExistingArray, saveString } from "src/utils/storage"
 
 interface PostsScreenProps extends AppStackScreenProps<"PostsScreen"> {}
 
@@ -48,6 +50,13 @@ const PostsScreen: FC<PostsScreenProps> = () => {
   useEffect(() => {
     refetch()
   }, [skipNumber])
+
+  useEffect(() => {
+    saveExistingArray("logs", {
+      action: "posts_screen",
+      ts: getCurrentDate(),
+    })
+  }, [])
 
   const handleLogout = useCallback(() => {
     Alert.alert(translate("common.logout"), translate("common.askLogout"), [
@@ -98,9 +107,7 @@ const PostsScreen: FC<PostsScreenProps> = () => {
       <View style={$headerContainer}>
         {user?.image && <Image source={{ uri: user.image }} style={$image} />}
         <View>
-          <Text preset="bold" tx={"loginScreen.welcome"} style={$userName}>
-            {user.firstName}
-          </Text>
+          <Text preset="bold" tx={"loginScreen.welcome"} style={$userName} />
           <Text preset="bold" style={$userName}>
             {user.firstName}
           </Text>
