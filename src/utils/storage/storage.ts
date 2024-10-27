@@ -68,6 +68,28 @@ export function save(key: string, value: unknown): boolean {
 }
 
 /**
+ * Saves an item to an array in storage.
+ *
+ * @param key The key of the array in storage.
+ * @param newItem The item to add to the array.
+ */
+export function saveExistingArray(key: string, newItem: any): boolean {
+  try {
+    // Retrieve existing array or create a new one
+    const existingData = load(key)
+    const dataArray = Array.isArray(existingData) ? existingData : []
+
+    // Add the new item
+    dataArray.push(newItem)
+
+    // Save updated array back to storage
+    return save(key, dataArray)
+  } catch {
+    return false
+  }
+}
+
+/**
  * Removes something from storage.
  *
  * @param key The key to kill.
@@ -81,7 +103,7 @@ export function remove(key: string): void {
 /**
  * Burn it all to the ground.
  */
-export function clear(): void {
+export function clearStore(): void {
   try {
     storage.clearAll()
   } catch {}
