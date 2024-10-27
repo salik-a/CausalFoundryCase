@@ -7,6 +7,8 @@ const en = {
     author: "Author",
     logout: "Logout",
     askLogout: "Are you sure you want to log out?",
+    search: "Search",
+    empty: "There is no data!",
   },
   welcomeScreen: {
     postscript:

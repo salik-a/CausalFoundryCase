@@ -9,6 +9,8 @@ const tr: Translations = {
     error: "Hata!",
     logout: "Çıkış Yap",
     askLogout: "Çıkış yapmek istediğinize emin misiniz?",
+    search: "Arama",
+    empty: "Veri bulunamadı!",
   },
   welcomeScreen: {
     postscript:
