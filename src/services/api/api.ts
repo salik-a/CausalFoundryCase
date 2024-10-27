@@ -30,8 +30,8 @@ export class Api {
     this.apisauce.setHeader("Authorization", `Bearer ${token}`)
   }
 
-  async getListPosts(): Promise<any[]> {
-    const response: ApiResponse<any[]> = await this.apisauce.get("/posts")
+  async getListPosts(skip: number): Promise<any> {
+    const response: ApiResponse<any> = await this.apisauce.get(`posts?limit=10&skip=${skip}`)
     if (!response.ok || !response.data) {
       throw new Error(response.problem || "API Error")
     }
@@ -46,8 +46,8 @@ export class Api {
     return response.data
   }
 
-  async getUser(Id: any): Promise<any[]> {
-    const response: ApiResponse<any[]> = await this.apisauce.get(`/users/${Id}`)
+  async getUser(Id: any): Promise<any> {
+    const response: ApiResponse<any> = await this.apisauce.get(`/users/${Id}`)
     if (!response.ok || !response.data) {
       throw new Error(response.problem || "API Error")
     }
