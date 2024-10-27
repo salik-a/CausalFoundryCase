@@ -1,24 +1,21 @@
-import React, { FC, useCallback, useEffect } from "react"
-import {
-  ActivityIndicator,
-  Alert,
-  Image,
-  ImageStyle,
-  Pressable,
-  TextStyle,
-  View,
-  ViewStyle,
-} from "react-native"
+import React, { FC, useCallback, useEffect } from "react";
+import { ActivityIndicator, Alert, Image, ImageStyle, Pressable, TextStyle, View, ViewStyle } from "react-native";
 
-import { useQuery } from "@tanstack/react-query"
-import { Screen, Text } from "src/components"
-import { translate } from "src/i18n"
-import { AppStackScreenProps, navigationRef } from "src/navigators"
-import { api } from "src/services/api"
-import { useUserStore } from "src/store/userStore"
-import { colors } from "src/theme"
-import { getCurrentDate } from "src/utils/getCurrentDate"
-import { saveExistingArray } from "src/utils/storage"
+
+
+import { useQuery } from "@tanstack/react-query";
+import { Screen, Text } from "src/components";
+import { translate } from "src/i18n";
+import { AppStackScreenProps, navigationRef } from "src/navigators";
+import { api } from "src/services/api";
+import { useUserStore } from "src/store/userStore";
+import { colors } from "src/theme";
+import { getCurrentDate } from "src/utils/getCurrentDate";
+import { saveExistingArray } from "src/utils/storage";
+
+
+
+
 
 interface PostsScreenDetailProps extends AppStackScreenProps<"PostsScreenDetail"> {}
 
@@ -27,7 +24,7 @@ const PostsScreenDetail: FC<PostsScreenDetailProps> = ({ navigation, route }) =>
   const user = useUserStore((state) => state.userInfo)
   const { userId, title, body } = route?.params
   const { data, error, isLoading, isFetching } = useQuery({
-    queryKey: ["posts-list"], // bu key her service için özel olmalı buna göre cacheleme yapıyor
+    queryKey: ["users-list"], // bu key her service için özel olmalı buna göre cacheleme yapıyor
     queryFn: () => api.getUser(userId), /// burada çalışmasını istediğimiz query fonksiyonunu belirtiyoruz
     enabled: true, //bu component yüklendiğinde direk çalış dedim
   })

@@ -12,12 +12,12 @@ import {
 } from "react-native"
 
 import { useQuery } from "@tanstack/react-query"
-import { PostCard, Screen, Text } from "src/components"
+import { PostCard, Screen, Text, TextField } from "src/components"
 import { translate } from "src/i18n"
 import { AppStackScreenProps, navigationRef } from "src/navigators"
 import { api } from "src/services/api"
 import { useUserStore } from "src/store/userStore"
-import { colors } from "src/theme"
+import { colors, spacing } from "src/theme"
 import { getCurrentDate } from "src/utils/getCurrentDate"
 import { saveExistingArray, saveString } from "src/utils/storage"
 
@@ -30,8 +30,9 @@ const PostsScreen: FC<PostsScreenProps> = () => {
   const [skipNumber, setSkipNumber] = useState(10)
   const [posts, setPosts] = useState<any>([])
   const [isFetchingMore, setIsFetchingMore] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
 
-  const { data, error, isLoading, isFetching, refetch } = useQuery({
+  const { isLoading, error, refetch } = useQuery({
     queryKey: ["posts-list"], // bu key her service için özel olmalı buna göre cacheleme yapıyor
     queryFn: () => api.getListPosts(skipNumber), /// burada çalışmasını istediğimiz query fonksiyonunu belirtiyoruz
     enabled: false, //bu component yüklendiğinde direk çalış dedim
@@ -40,16 +41,43 @@ const PostsScreen: FC<PostsScreenProps> = () => {
     },
   })
 
-  useEffect(() => {
-    if (data) {
-      setPosts((ex: any) => [...ex, ...data])
-      setIsFetchingMore(false)
-    }
-  }, [data])
+  const {
+    isLoading: searchDataLoading,
+    error: searchDataError,
+    refetch: searchDataRefetch,
+  } = useQuery({
+    queryKey: ["posts-list-search"], // bu key her service için özel olmalı buna göre cacheleme yapıyor
+    queryFn: () => api.getPostsSearch(searchQuery), /// burada çalışmasını istediğimiz query fonksiyonunu belirtiyoruz
+    enabled: false, //bu component yüklendiğinde direk çalış dedim
+    select: (newData) => {
+      return newData.posts
+    },
+  })
+
+  // useEffect(() => {
+  //   if (data) {
+  //     setPosts((ex: any) => [...ex, ...data])
+  //     setIsFetchingMore(false)
+  //   }
+  // }, [data])
 
   useEffect(() => {
-    refetch()
+    refetch().then((newData: any) => {
+      setPosts((ex: any) => [...ex, ...newData.data])
+      setIsFetchingMore(false)
+    })
   }, [skipNumber])
+
+  useEffect(() => {
+    if (searchQuery !== "") {
+      searchDataRefetch().then((data) => setPosts(data.data))
+    } else {
+      refetch().then((newData: any) => {
+        setPosts((ex: any) => [...ex, ...newData.data])
+        setIsFetchingMore(false)
+      })
+    }
+  }, [searchQuery])
 
   useEffect(() => {
     saveExistingArray("logs", {
@@ -86,7 +114,15 @@ const PostsScreen: FC<PostsScreenProps> = () => {
     )
   }, [])
 
-  if (error) {
+  const renderEmpty = useCallback(() => {
+    return (
+      <View style={$loadingContainer}>
+        <Text preset="heading">{translate("common.empty")}</Text>
+      </View>
+    )
+  }, [])
+
+  if (error || searchDataError) {
     return (
       <View style={$loadingContainer}>
         <Text preset="heading">{translate("common.error")}</Text>
@@ -94,7 +130,7 @@ const PostsScreen: FC<PostsScreenProps> = () => {
     )
   }
 
-  if (posts.length === 0) {
+  if (isLoading || searchDataLoading) {
     return (
       <View style={$loadingContainer}>
         <ActivityIndicator size={"large"} />
@@ -105,28 +141,40 @@ const PostsScreen: FC<PostsScreenProps> = () => {
   return (
     <Screen style={$container}>
       <View style={$headerContainer}>
-        {user?.image && <Image source={{ uri: user.image }} style={$image} />}
-        <View>
-          <Text preset="bold" tx={"loginScreen.welcome"} style={$userName} />
-          <Text preset="bold" style={$userName}>
-            {user.firstName}
-          </Text>
+        <View style={$headerInner}>
+          {user?.image && <Image source={{ uri: user.image }} style={$image} />}
+          <View>
+            <Text preset="bold" tx={"loginScreen.welcome"} style={$userName} />
+            <Text preset="bold" style={$userName}>
+              {user.firstName}
+            </Text>
+          </View>
+          <Pressable style={$logoutButton} onPress={handleLogout}>
+            <Text tx={"postsScreen.logout"} style={$userName} />
+          </Pressable>
         </View>
-        <Pressable style={$logoutButton} onPress={handleLogout}>
-          <Text tx={"postsScreen.logout"} style={$userName} />
-        </Pressable>
-      </View>
-      {posts.length > 0 && (
-        <FlatList
-          data={posts}
-          keyExtractor={(item) => item.id}
-          renderItem={renderPost}
-          onEndReached={() => {
-            setSkipNumber((ex) => ex + 10)
-            setIsFetchingMore(true)
+        <TextField
+          value={searchQuery}
+          onChangeText={(text) => {
+            setSearchQuery(text)
           }}
+          placeholder="Search"
+          placeholderTx="common.search"
+          containerStyle={$inputContainer}
+          placeholderTextColor={"#00000050"}
+          inputWrapperStyle={{ height: 40 }}
         />
-      )}
+      </View>
+      <FlatList
+        data={posts}
+        keyExtractor={(item) => item.id}
+        renderItem={renderPost}
+        onEndReached={() => {
+          setSkipNumber((ex) => ex + 10)
+          setIsFetchingMore(true)
+        }}
+        ListEmptyComponent={renderEmpty}
+      />
       {isFetchingMore ? (
         <View style={$fetching}>
           <ActivityIndicator size="large" color="black" />
@@ -155,12 +203,18 @@ const $userName: TextStyle = {
 const $headerContainer: TextStyle = {
   width: "100%",
   alignItems: "center",
-  justifyContent: "space-around",
-  flexDirection: "row",
+  justifyContent: "center",
   borderBottomLeftRadius: 16,
   borderBottomRightRadius: 16,
   paddingTop: 30,
   backgroundColor: colors.palette.accent200,
+}
+
+const $headerInner: TextStyle = {
+  width: "100%",
+  alignItems: "center",
+  justifyContent: "space-around",
+  flexDirection: "row",
 }
 
 const $image: ImageStyle = {
@@ -181,6 +235,11 @@ const $fetching: ImageStyle = {
   position: "absolute",
   bottom: 0,
   zIndex: 100,
+}
+
+const $inputContainer: ViewStyle = {
+  marginVertical: spacing.md,
+  width: "75%",
 }
 
 export default PostsScreen
