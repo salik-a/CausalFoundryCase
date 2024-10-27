@@ -61,7 +61,15 @@ const PostsScreen: FC<PostsScreenProps> = () => {
     )
   }, [])
 
-  if (isLoading) {
+    if (error) {
+    return (
+      <View style={$loadingContainer}>
+        <Text preset="heading">{translate("common.author")}</Text>
+      </View>
+    )
+  }
+
+  if (isLoading || isFetching) {
     return (
       <View style={$loadingContainer}>
         <ActivityIndicator size={"large"} />
