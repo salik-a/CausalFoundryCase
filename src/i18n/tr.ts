@@ -5,6 +5,8 @@ const tr: Translations = {
     ok: "Tamam",
     cancel: "İptal",
     back: "Geri",
+    author: "Yazar",
+    error: "Hata!",
     logout: "Çıkış Yap",
     askLogout: "Çıkış yapmek istediğinize emin misiniz?",
   },

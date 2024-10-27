@@ -3,6 +3,8 @@ const en = {
     ok: "OK!",
     cancel: "Cancel",
     back: "Back",
+    error: "Error!",
+    author: "Author",
     logout: "Logout",
     askLogout: "Are you sure you want to log out?",
   },
