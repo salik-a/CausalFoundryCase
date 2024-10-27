@@ -8,8 +8,6 @@
 import React, { useEffect } from "react"
 import { AppState, useColorScheme } from "react-native"
 
-
-
 import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
 import { useMutation } from "@tanstack/react-query"
@@ -19,8 +17,6 @@ import { useUserStore } from "src/store/userStore"
 import { colors } from "src/theme"
 import { getCurrentDate } from "src/utils/getCurrentDate"
 import { clearStore, load, saveExistingArray } from "src/utils/storage"
-
-
 
 import Config from "../config"
 import { useNavigatorFontScalingScreenOptions } from "../theme/fonting"
@@ -52,8 +48,6 @@ export type AppStackParamList = {
     title: string
     body: string
   }
-  // 🔥 Your screens go here
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -98,14 +92,12 @@ const AppStack = () => {
 
     const handleAppStateChange = (nextAppState: string) => {
       if (nextAppState === "background") {
-        // Uygulama arka plana alındığında çalışacak fonksiyon
         handleSendLogs()
       }
     }
 
     const subscription = AppState.addEventListener("change", handleAppStateChange)
 
-    // Temizleme işlemi
     return () => {
       subscription.remove()
     }
@@ -123,8 +115,6 @@ const AppStack = () => {
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="PostsScreen" component={PostsScreen} />
       <Stack.Screen name="PostsScreenDetail" component={PostsScreenDetail} />
-      {/** 🔥 Your screens go here */}
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 }
