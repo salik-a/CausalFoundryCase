@@ -3,6 +3,8 @@ const en = {
     ok: "OK!",
     cancel: "Cancel",
     back: "Back",
+    logout: "Logout",
+    askLogout: "Are you sure you want to log out?",
   },
   welcomeScreen: {
     postscript:
@@ -36,6 +38,10 @@ const en = {
     namePlaceholder: "emilys",
     password: "Password",
     passwordPlaceholder: "emilyspass",
+    welcome: "Welcome",
+  },
+  postsScreen: {
+    logout: "Logout",
   },
 }
 

@@ -5,6 +5,8 @@ const tr: Translations = {
     ok: "Tamam",
     cancel: "İptal",
     back: "Geri",
+    logout: "Çıkış Yap",
+    askLogout: "Çıkış yapmek istediğinize emin misiniz?",
   },
   welcomeScreen: {
     postscript:
@@ -39,6 +41,10 @@ const tr: Translations = {
     namePlaceholder: "emilys",
     password: "Şifre",
     passwordPlaceholder: "emilyspass",
+    welcome: "Hoşgeldin",
+  },
+  postsScreen: {
+    logout: "Çıkış Yap",
   },
 }
 
