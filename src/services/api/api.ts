@@ -38,8 +38,8 @@ export class Api {
     return response.data
   }
 
-  async getPostsSearch(query: string): Promise<any[]> {
-    const response: ApiResponse<any[]> = await this.apisauce.get(`posts/search?q=${query}`)
+  async getPostsSearch(query: string): Promise<any> {
+    const response: ApiResponse<any> = await this.apisauce.get(`posts/search?q=${query}`)
     if (!response.ok || !response.data) {
       throw new Error(response.problem || "API Error")
     }
