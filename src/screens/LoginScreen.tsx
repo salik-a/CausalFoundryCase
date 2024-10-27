@@ -7,6 +7,7 @@ import { Controller, useForm } from "react-hook-form"
 import { Button, Screen, Text, TextField } from "src/components"
 import { AppStackScreenProps, navigationRef } from "src/navigators"
 import { api } from "src/services/api"
+import { useUserStore } from "src/store/userStore"
 import { colors, spacing } from "src/theme"
 import * as yup from "yup"
 
@@ -20,11 +21,13 @@ interface IFormData {
 interface LoginScreenProps extends AppStackScreenProps<"LoginScreen"> {}
 
 const LoginScreen: FC<LoginScreenProps> = () => {
+  const setUserInfo = useUserStore((state) => state.setUserInfo)
   const { mutate: loginMutate } = useMutation<any, Error, IFormData>({
     mutationKey: ["login"],
     mutationFn: (formData: IFormData) => api.login(formData.userName, formData.password),
     onSuccess: (responseData) => {
       if (responseData.accessToken) {
+        setUserInfo(responseData)
         navigationRef.navigate("PostsScreen")
       }
     },
