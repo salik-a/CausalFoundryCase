@@ -15,7 +15,7 @@ const { width } = Dimensions.get("window")
 export function PostCard({ body, title, userId, onPress }: IPost) {
   return (
     <Pressable style={$container} onPress={onPress}>
-      <Image source={{ uri: `https://picsum.photos/200?random=${userId}` }} style={$image} />
+      <Image source={{ uri: `https://picsum.photos/seed/${userId}/200/150` }} style={$image} />
       <View style={$content}>
         <Text style={$title}>{title}</Text>
         <Text style={$body}>{body}</Text>
