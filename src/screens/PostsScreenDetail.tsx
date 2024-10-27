@@ -114,6 +114,7 @@ const $loadingContainer: ViewStyle = {
   flex: 1,
   backgroundColor: colors.background,
   alignItems: "center",
+  justifyContent: "center",
 }
 
 const $userName: TextStyle = {
