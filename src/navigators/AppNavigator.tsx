@@ -19,6 +19,7 @@ import Config from "../config"
 import { useNavigatorFontScalingScreenOptions } from "../theme/fonting"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 
+
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
  * as well as what properties (if any) they might take when navigating to them.
@@ -39,7 +40,11 @@ export type AppStackParamList = {
   CounterScreen: undefined
   LoginScreen: undefined
   PostsScreen: undefined
-  PostsScreenDetail: undefined
+  PostsScreenDetail: {
+    userId: number
+    title: string
+    body: string
+  }
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
