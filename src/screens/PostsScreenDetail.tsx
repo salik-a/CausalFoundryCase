@@ -1,21 +1,24 @@
-import React, { FC, useCallback, useEffect } from "react";
-import { ActivityIndicator, Alert, Image, ImageStyle, Pressable, TextStyle, View, ViewStyle } from "react-native";
+import React, { FC, useCallback, useEffect } from "react"
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  ImageStyle,
+  Pressable,
+  TextStyle,
+  View,
+  ViewStyle,
+} from "react-native"
 
-
-
-import { useQuery } from "@tanstack/react-query";
-import { Screen, Text } from "src/components";
-import { translate } from "src/i18n";
-import { AppStackScreenProps, navigationRef } from "src/navigators";
-import { api } from "src/services/api";
-import { useUserStore } from "src/store/userStore";
-import { colors } from "src/theme";
-import { getCurrentDate } from "src/utils/getCurrentDate";
-import { saveExistingArray } from "src/utils/storage";
-
-
-
-
+import { useQuery } from "@tanstack/react-query"
+import { Screen, Text } from "src/components"
+import { translate } from "src/i18n"
+import { AppStackScreenProps, navigationRef } from "src/navigators"
+import { api } from "src/services/api"
+import { useUserStore } from "src/store/userStore"
+import { colors } from "src/theme"
+import { getCurrentDate } from "src/utils/getCurrentDate"
+import { saveExistingArray } from "src/utils/storage"
 
 interface PostsScreenDetailProps extends AppStackScreenProps<"PostsScreenDetail"> {}
 

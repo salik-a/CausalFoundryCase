@@ -1,18 +1,23 @@
-import React, { FC, useEffect } from "react"
-import { Alert, Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
+import React, { FC, useEffect } from "react";
+import { Alert, Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native";
 
-import { yupResolver } from "@hookform/resolvers/yup"
-import { useMutation } from "@tanstack/react-query"
-import { Controller, useForm } from "react-hook-form"
-import { Button, Screen, Text, TextField } from "src/components"
-import { AppStackScreenProps, navigationRef } from "src/navigators"
-import { api } from "src/services/api"
-import { useUserStore } from "src/store/userStore"
-import { colors, spacing } from "src/theme"
-import { saveExistingArray } from "src/utils/storage"
-import * as yup from "yup"
 
-import { getCurrentDate } from "../utils/getCurrentDate"
+
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
+import { Controller, useForm } from "react-hook-form";
+import { Button, Screen, Text, TextField } from "src/components";
+import { AppStackScreenProps, navigationRef } from "src/navigators";
+import { api } from "src/services/api";
+import { useUserStore } from "src/store/userStore";
+import { colors, spacing } from "src/theme";
+import { saveExistingArray } from "src/utils/storage";
+import * as yup from "yup";
+
+
+
+import { getCurrentDate } from "../utils/getCurrentDate";
+
 
 const welcomeLogo = require("../../assets/images/logo.png")
 
@@ -31,6 +36,10 @@ const LoginScreen: FC<LoginScreenProps> = () => {
     onSuccess: (responseData) => {
       if (responseData.accessToken) {
         setUserInfo(responseData)
+        saveExistingArray("logs", {
+          action: "login_action",
+          ts: getCurrentDate(),
+        })
         navigationRef.navigate("PostsScreen")
       }
     },
