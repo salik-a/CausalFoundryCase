@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from "react"
+import React, { FC, useCallback, useEffect, useState } from "react"
 import {
   ActivityIndicator,
   Alert,
@@ -26,12 +26,28 @@ const PostsScreen: FC<PostsScreenProps> = () => {
   const removeUserInfo = useUserStore((state) => state.removeUserInfo)
 
   const [skipNumber, setSkipNumber] = useState(10)
+  const [posts, setPosts] = useState<any>([])
+  const [isFetchingMore, setIsFetchingMore] = useState(false)
 
-  const { data, error, isLoading, isFetching } = useQuery({
+  const { data, error, isLoading, isFetching, refetch } = useQuery({
     queryKey: ["posts-list"], // bu key her service için özel olmalı buna göre cacheleme yapıyor
     queryFn: () => api.getListPosts(skipNumber), /// burada çalışmasını istediğimiz query fonksiyonunu belirtiyoruz
-    enabled: true, //bu component yüklendiğinde direk çalış dedim
+    enabled: false, //bu component yüklendiğinde direk çalış dedim
+    select: (newData) => {
+      return newData.posts
+    },
   })
+
+  useEffect(() => {
+    if (data) {
+      setPosts((ex: any) => [...ex, ...data])
+      setIsFetchingMore(false)
+    }
+  }, [data])
+
+  useEffect(() => {
+    refetch()
+  }, [skipNumber])
 
   const handleLogout = useCallback(() => {
     Alert.alert(translate("common.logout"), translate("common.askLogout"), [
@@ -61,15 +77,15 @@ const PostsScreen: FC<PostsScreenProps> = () => {
     )
   }, [])
 
-    if (error) {
+  if (error) {
     return (
       <View style={$loadingContainer}>
-        <Text preset="heading">{translate("common.author")}</Text>
+        <Text preset="heading">{translate("common.error")}</Text>
       </View>
     )
   }
 
-  if (isLoading || isFetching) {
+  if (posts.length === 0) {
     return (
       <View style={$loadingContainer}>
         <ActivityIndicator size={"large"} />
@@ -93,9 +109,22 @@ const PostsScreen: FC<PostsScreenProps> = () => {
           <Text tx={"postsScreen.logout"} style={$userName} />
         </Pressable>
       </View>
-      {data && (
-        <FlatList data={data.posts} keyExtractor={(item) => item.id} renderItem={renderPost} />
+      {posts.length > 0 && (
+        <FlatList
+          data={posts}
+          keyExtractor={(item) => item.id}
+          renderItem={renderPost}
+          onEndReached={() => {
+            setSkipNumber((ex) => ex + 10)
+            setIsFetchingMore(true)
+          }}
+        />
       )}
+      {isFetchingMore ? (
+        <View style={$fetching}>
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      ) : null}
     </Screen>
   )
 }
@@ -109,6 +138,7 @@ const $loadingContainer: ViewStyle = {
   flex: 1,
   backgroundColor: colors.background,
   alignItems: "center",
+  justifyContent: "center",
 }
 
 const $userName: TextStyle = {
@@ -138,6 +168,12 @@ const $logoutButton: ImageStyle = {
   backgroundColor: colors.border,
   padding: 2,
   paddingHorizontal: 4,
+}
+
+const $fetching: ImageStyle = {
+  position: "absolute",
+  bottom: 0,
+  zIndex: 100,
 }
 
 export default PostsScreen
