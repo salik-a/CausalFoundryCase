@@ -19,8 +19,7 @@ import * as yup from "yup";
 import { getCurrentDate } from "../utils/getCurrentDate";
 
 
-const welcomeLogo = require("../../assets/images/logo.png")
-
+const welcomeLogo = require("../../assets/images/causal_foundry_logo.png")
 interface IFormData {
   userName: string
   password: string
@@ -90,7 +89,7 @@ const LoginScreen: FC<LoginScreenProps> = () => {
         <Text
           testID="welcome-heading"
           style={$welcomeHeading}
-          tx="loginScreen.login"
+          tx="loginScreen.welcome"
           preset="heading"
         />
       </View>
@@ -169,6 +168,7 @@ const $container: ViewStyle = {
 }
 
 const $topContainer: ViewStyle = {
+  marginTop: spacing.lg,
   justifyContent: "center",
   paddingHorizontal: spacing.lg,
 }
