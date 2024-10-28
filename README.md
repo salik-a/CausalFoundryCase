@@ -16,6 +16,7 @@ Currently includes:
 - React-Query
 - Zustand
 - React-Native-Mmkv
+- Maestro
 - And more!
 
 ### Features
@@ -134,7 +135,7 @@ project
 
 - **`src/components`**: Contains reusable components.
 
-- **`test`**: Holds unit tests and mock files for TDD.
+- **`.maestro`**: Holds maestro tests and files.
 
 ---
 
