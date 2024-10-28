@@ -90,6 +90,7 @@ After installation done you can run tests wtih this command:
 ```bash
 yarn test:maestro
 ```
+Also you can check this guide: https://dev.to/b42/test-your-react-native-app-with-maestro-5bfj
 
 ## Project Structure
 
