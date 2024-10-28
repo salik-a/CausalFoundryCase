@@ -2,6 +2,15 @@
 
 ---
 
+## Screenshots
+
+<div style="display: flex;">
+<img src="./screenshot/login.png" alt="Login" width="150" height="350" style="margin-right: 10px;" />
+<img src="./screenshot/posts.png" alt="Posts" width="150" height="350" style="margin-right: 10px;" />
+<img src="./screenshot/post_detail.png" alt="PostDetail" width="150" height="350" style="margin-right: 10px;" />
+<img src="./screenshot/posts_search.png" alt="PostsSearch" width="150" height="350" style="margin-right: 10px;" />
+</div>
+
 ## Project Overview
 
 This project, **CasualFoundryCase**, is a React Native-based application developed as a case study for a React Native Developer position. The app is designed to showcase skills in mobile app development, API management, multi-screen handling, and basic logging features in alignment with the requirements specified in the provided case study document. 
