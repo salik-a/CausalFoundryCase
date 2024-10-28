@@ -18,10 +18,11 @@ import { colors } from "src/theme"
 import { getCurrentDate } from "src/utils/getCurrentDate"
 import { clearStore, load, saveExistingArray } from "src/utils/storage"
 
+
+
 import Config from "../config"
 import { useNavigatorFontScalingScreenOptions } from "../theme/fonting"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
-
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -47,6 +48,7 @@ export type AppStackParamList = {
     userId: number
     title: string
     body: string
+    testID: string
   }
 }
 

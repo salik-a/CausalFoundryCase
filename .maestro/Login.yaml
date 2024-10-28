@@ -1,0 +1,20 @@
+#flow: Login
+#intent:
+# Open up our app and use the default credentials to login
+# and navigate to the demo screen
+
+- assertVisible: "Sign In"
+- tapOn:
+    text: "Sign In"
+- assertVisible: "Check your username"
+- inputText:
+    id: "input_username"  # Input alanının id'si (veya diğer bir tanımlayıcı)
+    text: "emilys"
+- inputText:
+    id: "input_password"  # Input alanının id'si (veya diğer bir tanımlayıcı)
+    text: "emilyspass"
+- hideKeyboard
+- tapOn:
+    text: "Sign In"
+- assertVisible: "Welcome"
+- assertVisible: "Emily"

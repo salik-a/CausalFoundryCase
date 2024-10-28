@@ -1,25 +1,21 @@
-import React, { FC, useCallback, useEffect, useState } from "react"
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  Image,
-  ImageStyle,
-  Pressable,
-  TextStyle,
-  View,
-  ViewStyle,
-} from "react-native"
+import React, { FC, useCallback, useEffect, useState } from "react";
+import { ActivityIndicator, Alert, FlatList, Image, ImageStyle, Pressable, TextStyle, View, ViewStyle } from "react-native";
 
-import { useQuery } from "@tanstack/react-query"
-import { PostCard, Screen, Text, TextField } from "src/components"
-import { translate } from "src/i18n"
-import { AppStackScreenProps, navigationRef } from "src/navigators"
-import { api } from "src/services/api"
-import { useUserStore } from "src/store/userStore"
-import { colors, spacing } from "src/theme"
-import { getCurrentDate } from "src/utils/getCurrentDate"
-import { saveExistingArray } from "src/utils/storage"
+
+
+import { useQuery } from "@tanstack/react-query";
+import { PostCard, Screen, Text, TextField } from "src/components";
+import { translate } from "src/i18n";
+import { AppStackScreenProps, navigationRef } from "src/navigators";
+import { api } from "src/services/api";
+import { useUserStore } from "src/store/userStore";
+import { colors, spacing } from "src/theme";
+import { getCurrentDate } from "src/utils/getCurrentDate";
+import { saveExistingArray } from "src/utils/storage";
+
+
+
+
 
 interface PostsScreenProps extends AppStackScreenProps<"PostsScreen"> {}
 
@@ -103,7 +99,7 @@ const PostsScreen: FC<PostsScreenProps> = () => {
     ])
   }, [])
 
-  const renderPost = useCallback(({ item }: any) => {
+  const renderPost = useCallback(({ item, index }: any) => {
     return (
       <PostCard
         onPress={() => {
@@ -111,11 +107,12 @@ const PostsScreen: FC<PostsScreenProps> = () => {
             action: "post_clicked",
             ts: getCurrentDate(),
           })
-          navigationRef.navigate("PostsScreenDetail", item)
+          navigationRef.navigate("PostsScreenDetail", { ...item, testID: `post_card_${index}` })
         }}
         body={item.body}
         title={item.title}
         userId={item.userId}
+        testID={`post_card_${index}`}
       />
     )
   }, [])

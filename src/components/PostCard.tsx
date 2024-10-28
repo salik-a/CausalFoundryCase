@@ -7,14 +7,15 @@ interface IPost {
   body: string
   title: string
   userId: number
+  testID: string
   onPress: () => void
 }
 
 const { width } = Dimensions.get("window")
 
-export function PostCard({ body, title, userId, onPress }: IPost) {
+export function PostCard({ body, title, userId, onPress, testID }: IPost) {
   return (
-    <Pressable style={$container} onPress={onPress}>
+    <Pressable style={$container} onPress={onPress} testID={testID}>
       <Image source={{ uri: `https://picsum.photos/seed/${userId}/200/150` }} style={$image} />
       <View style={$content}>
         <Text style={$title}>{title}</Text>

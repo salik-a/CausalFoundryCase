@@ -25,7 +25,7 @@ interface PostsScreenDetailProps extends AppStackScreenProps<"PostsScreenDetail"
 const PostsScreenDetail: FC<PostsScreenDetailProps> = ({ navigation, route }) => {
   const removeUserInfo = useUserStore((state) => state.removeUserInfo)
   const user = useUserStore((state) => state.userInfo)
-  const { userId, title, body } = route?.params
+  const { userId, title, body, testID } = route?.params
   const { data, error, isLoading, isFetching } = useQuery({
     queryKey: ["users-list"], // bu key her service için özel olmalı buna göre cacheleme yapıyor
     queryFn: () => api.getUser(userId), /// burada çalışmasını istediğimiz query fonksiyonunu belirtiyoruz
@@ -105,6 +105,7 @@ const PostsScreenDetail: FC<PostsScreenDetailProps> = ({ navigation, route }) =>
           <Image
             source={{ uri: `https://picsum.photos/seed/${userId}/200/150` }}
             style={$postImage}
+            testID={`${testID}_image`}
           />
 
           <Text style={$textBody}>{body}</Text>

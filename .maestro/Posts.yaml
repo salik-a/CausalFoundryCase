@@ -1,0 +1,9 @@
+- assertVisible: "Welcome"
+- assertVisible: "Emily"
+- assertVisible:
+    id: "post_card_1"
+- tapOn:
+    id: "post_card_1" 
+- assertVisible: "Author"
+- assertVisible:
+    id: "post_card_1_image"

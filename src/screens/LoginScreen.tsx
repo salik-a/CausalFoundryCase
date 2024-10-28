@@ -114,6 +114,7 @@ const LoginScreen: FC<LoginScreenProps> = () => {
               inputWrapperStyle={{ height: 50 }}
               status={undefined}
               containerStyle={$inputContainer}
+              testID="input_username"
             />
           )}
           name="userName"
@@ -141,6 +142,7 @@ const LoginScreen: FC<LoginScreenProps> = () => {
               inputWrapperStyle={{ height: 50 }}
               status={undefined}
               containerStyle={$inputContainer}
+              testID="input_password"
             />
           )}
           name="password"
