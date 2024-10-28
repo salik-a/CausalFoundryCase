@@ -68,6 +68,29 @@ Currently includes:
 
 ---
 
+### Testing
+
+This project has a Maestro E2E tests. To run this tests we're going to start by installing Maestro via the terminal. To do this, we'll need to run the following command:
+
+```bash
+curl -Ls "https://get.maestro.mobile.dev" | bash
+```
+
+If you haven't already, you'll also need to install Facebook's IDB Companion tool:
+
+```bash
+brew tap facebook/fb
+brew install idb-companion
+```
+
+If you run into any issues, check out the [Maestro cli installation guide](https://maestro.mobile.dev/getting-started/installing-maestro#installing-the-cli) for more information.
+
+After installation done you can run tests wtih this command:
+
+```bash
+yarn test:maestro
+```
+
 ## Project Structure
 
 The project structure is organized to enhance maintainability and readability, as detailed below:
@@ -87,7 +110,7 @@ project
 │   ├── utils               # Utility functions
 │   └── app.tsx             # Main application entry point
 ├── assets                  # Static assets (icons, images, etc.)
-├── test                    # Test setup and mock files
+├── .maestro                # Maestro Test files
 ├── README.md
 ├── android                 # Android specific files
 ├── ios                     # iOS specific files
